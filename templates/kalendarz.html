@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calendar</title>
+    <title>Terminarz zajec</title>
     <style>
         table {
             width: 100%;
@@ -23,27 +23,22 @@
 <body>
     <h1>Terminarz zajec</h1>
     <table>
+    <tr>
+        <th>Poniedzialek</th>
+        <th>Wtorek</th>
+        <th>Sroda</th>
+        <th>Czwartek</th>
+        <th>Piatek</th>
+        <th>Sobota</th>
+        <th>Niedziela</th>
+    </tr>
+    {% for item in kalendarz %}
         <tr>
-            <th>Poniedzialek</th>
-            <th>Wtorek</th>
-            <th>Sroda</th>
-            <th>Czwartek</th>
-            <th>Piatek</th>
-            <th>Sobota</th>
-            <th>Niedziela</th>
+            {% for dzien in item %}
+                <td>{{ dzien }}</td>
+            {% endfor %}
         </tr>
-        {% for week in data_kalendarza %}
-            <tr>
-                {% for dzien_eventy in week %}
-                    <td>
-                        {% if dzien_eventy %}
-                            <strong>{{ loop.index }}</strong><br>
-                            {{ dzien_eventy }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-        {% endfor %}
+    {% endfor %}
     </table>
 </body>
 </html>
