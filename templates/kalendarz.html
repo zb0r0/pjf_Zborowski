@@ -18,6 +18,7 @@
         th {
             background-color: #f2f2f2;
         }
+        td { border: 1px solid black; }
     </style>
 </head>
 <body>
@@ -31,10 +32,11 @@
         <th>Piatek</th>
         <th>Sobota</th>
         <th>Niedziela</th>
+
     </tr>
-    {% for item in kalendarz %}
+    {% for tydzien in kalendarz %}
         <tr>
-            {% for dzien in item %}
+            {% for dzien in tydzien %}
                 <td>{{ dzien }}</td>
             {% endfor %}
         </tr>
