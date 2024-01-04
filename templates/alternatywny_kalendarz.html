@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terminarz zajec</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        td { border: 1px solid black; }
+    </style>
+</head>
+<body>
+    <h1>Terminarz zajec</h1>
+    <table>
+        <tr>
+            <th>Data</th>
+            <th>Poniedzialek</th>
+            <th>Wtorek</th>
+            <th>Sroda</th>
+            <th>Czwartek</th>
+            <th>Piatek</th>
+            <th>Sobota</th>
+            <th>Niedziela</th>
+        </tr>
+        {% for przedmiot in zajecia %}
+            <tr>
+                <td>{{ przedmiot[0] }}</td>
+                {% for tydzien in kalendarz %}
+                    {% for dzien in tydzien %}
+                        <td>
+                            {{ dzien }}
+                            {% for linijka in terminarz %}
+                                {% if linijka[2] == dzien and linijka[0] == przedmiot[0] %}
+                                    <br>{{ linijka[0] }} - {{ linijka[1] }}
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                    {% endfor %}
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

@@ -35,11 +35,18 @@
 
     </tr>
     {% for tydzien in kalendarz %}
-        <tr>
-            {% for dzien in tydzien %}
-                <td>{{ dzien }}</td>
-            {% endfor %}
-        </tr>
+    <tr>
+        {% for dzien in tydzien %}
+            <td>
+                {{ dzien }}
+                {% for linijka in zajecia %}
+                    {% if linijka[2] == dzien %}
+                        <br>{{ linijka[0] }} - {{ linijka[1] }}
+                    {% endif %}
+                {% endfor %}
+            </td>
+        {% endfor %}
+    </tr>
     {% endfor %}
     </table>
 </body>
