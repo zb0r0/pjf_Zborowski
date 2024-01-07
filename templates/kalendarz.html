@@ -54,11 +54,13 @@
                 {% for linijka in zajecia %}
                     {% if linijka[2] == dzien %}
                         <div class="day-row">{{ linijka[0] }} - {{ linijka[1] }}</div>
+{#                    {% else %}#}
+{#                        <div class="day-row"><br></div>#}
                     {% endif %}
                 {% endfor %}
             </td>
         {% endfor %}
-    </div>
+    </tr>
     {% endfor %}
     </table>
 </body>
