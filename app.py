@@ -34,14 +34,70 @@ def generowanie_dat(poczatek_kalendarza, koniec_kalendarza):
 
 def odczyt_terminarza():
 
-    with open('zajecia.csv', newline='') as zajecia_dane:
-        terminarz = csv.reader(zajecia_dane, delimiter=';')
+    with open('zajecia.csv', newline='') as odczyt_csv:
+        terminarz = csv.DictReader(odczyt_csv, delimiter=';')
+        terminarz_zajecia = {}
 
-    return terminarz
+        for linia in terminarz:
+            dzien = linia['Data rozpoczęcia']
+            zajecia = linia['Temat']
+            lokalizacja = linia['Lokalizacja']
+            czas_rozpoczecia = linia['Czas rozpoczęcia']
+            czas_zakonczenia = linia['Czas zakończenia']
+
+            zajecia_dane = {
+                'Temat': zajecia,
+                'Lokalizacja': lokalizacja,
+                'Czas rozpoczęcia': czas_rozpoczecia,
+                'Czas zakończenia': czas_zakonczenia,
+            }
+
+            if dzien in terminarz_zajecia:
+                terminarz_zajecia[dzien].append(zajecia_dane)
+            else:
+                terminarz_zajecia[dzien] = [zajecia_dane]
+    for dzien in terminarz_zajecia:
+        terminarz_zajecia[dzien] = sorted(terminarz_zajecia[dzien], key=lambda x: datetime.strptime(x['Czas rozpoczęcia'],'%H:%M:%S'))
+
+
+    return terminarz_zajecia
+
+def uzupelnienie_dnia_zajec(poczatek_kalendarza, koniec_kalendarza):
+    eventy = odczyt_terminarza()
+    kalendarz = generowanie_dat(poczatek_kalendarza, koniec_kalendarza)
+    pelny_kalendarz = {}
+
+    godziny_zajec = [
+        '08:00-09:35',
+        '09:50-11:25',
+        '11:40-13:15',
+        '13:30-15:05',
+        '15:45-17:20',
+        '17:35-19:10',
+        '19:25-21:00'
+    ]
+
+    for dzien in kalendarz:
+        pelny_kalendarz[dzien] = [''] * 7
+
+    for dzien in kalendarz:
+        for i, przedmiot in enumerate(dzien):
+            for event in eventy.get(dzien, []):
+                poczatek_zajec = datetime.strptime(event['Czas rozpoczęcia'], '%H:%M:%S').time()
+                koniec_zajec = datetime.strptime(event['Czas zakończenia'], '%H:%M:%S').time()
+
+                if i < len(godziny_zajec):  # Dodane sprawdzenie
+                    for godziny_slotu in godziny_zajec[i].split('-'):
+                        slot_godzina = datetime.strptime(godziny_slotu, '%H:%M').time()
+                        if poczatek_zajec <= slot_godzina <= koniec_zajec:
+                            pelny_kalendarz[dzien][i] = event
+
+    return pelny_kalendarz
 
 def dzielenie_kalendarza_na_siedem(kalendarz):
     for i in range(0, len(kalendarz), 7):
         yield kalendarz[i:i + 7]
+
 
 @app.route('/')
 def widok_kalendarza():
@@ -52,13 +108,15 @@ def widok_kalendarza():
     #funkcje obliczające pierwszy oraz ostatni dzien kalendarza, aby móc przedstawić go w przejrzysty sposób
     poczatek_kalendarza = poczatek_tygodnia(poczatek_semestru)
     koniec_kalendarza = koniec_tygodnia(koniec_semestru)
-    kalendarz = generowanie_dat(poczatek_kalendarza, koniec_kalendarza)
-    kalendarz = dzielenie_kalendarza_na_siedem(kalendarz)
+    kalendarz = uzupelnienie_dnia_zajec(poczatek_kalendarza, koniec_kalendarza)
+    #kalendarz = dzielenie_kalendarza_na_siedem(kalendarz)
 
     with open('zajecia.csv', newline='') as zajecia_dane:
-        terminarz = csv.reader(zajecia_dane, delimiter=';')
+        terminarz = csv.DictReader(zajecia_dane, delimiter=';')
         zajecia = list(terminarz)
 
+
+    print(kalendarz)
     return render_template('kalendarz.html', kalendarz=kalendarz, zajecia=zajecia)
 
 if __name__ == '__main__':
