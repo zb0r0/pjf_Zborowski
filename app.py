@@ -86,7 +86,7 @@ def uzupelnienie_dnia_zajec(poczatek_kalendarza, koniec_kalendarza):
                 poczatek_zajec = datetime.strptime(event['Czas rozpoczęcia'], '%H:%M:%S').time()
                 koniec_zajec = datetime.strptime(event['Czas zakończenia'], '%H:%M:%S').time()
 
-                if i < len(godziny_zajec):  # Dodane sprawdzenie
+                if i < len(godziny_zajec):
                     for godziny_slotu in godziny_zajec[i].split('-'):
                         slot_godzina = datetime.strptime(godziny_slotu, '%H:%M').time()
                         if poczatek_zajec <= slot_godzina <= koniec_zajec:
@@ -95,8 +95,9 @@ def uzupelnienie_dnia_zajec(poczatek_kalendarza, koniec_kalendarza):
     return pelny_kalendarz
 
 def dzielenie_kalendarza_na_siedem(kalendarz):
-    for i in range(0, len(kalendarz), 7):
-        yield kalendarz[i:i + 7]
+    for dzien, zajecia in kalendarz.items():
+        for i in range(0, len(zajecia), 7):
+            yield dzien, zajecia[i:i + 7]
 
 
 @app.route('/')
@@ -109,15 +110,11 @@ def widok_kalendarza():
     poczatek_kalendarza = poczatek_tygodnia(poczatek_semestru)
     koniec_kalendarza = koniec_tygodnia(koniec_semestru)
     kalendarz = uzupelnienie_dnia_zajec(poczatek_kalendarza, koniec_kalendarza)
-    #kalendarz = dzielenie_kalendarza_na_siedem(kalendarz)
+    kalendarz = dzielenie_kalendarza_na_siedem(kalendarz)
 
-    with open('zajecia.csv', newline='') as zajecia_dane:
-        terminarz = csv.DictReader(zajecia_dane, delimiter=';')
-        zajecia = list(terminarz)
-
-
-    print(kalendarz)
-    return render_template('kalendarz.html', kalendarz=kalendarz, zajecia=zajecia)
+    for dzien, zajecia in kalendarz:
+        print(f"Dzien: {dzien}, Zajecia: {zajecia}")
+    return render_template('kalendarz.html', kalendarz=kalendarz)
 
 if __name__ == '__main__':
     app.run(debug=True)
