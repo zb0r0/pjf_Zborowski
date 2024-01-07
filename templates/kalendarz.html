@@ -36,7 +36,7 @@
             <th>Niedziela</th>
         </tr>
 
-        {% for dzien, zajecia in kalendarz %}
+        {% for tydzien in kalendarz %}
             <tr>
                 <td>
                     <div class="day-row"></div>
@@ -49,16 +49,18 @@
                     <div class="day-row">19:25-21:00</div>
                 </td>
 
-                <td>
-                    <div class="day-row">{{ dzien }}</div>
-                    {% for przedmiot in zajecia %}
-                        {% if przedmiot != '' %}
-                            <div class="day-row">{{ przedmiot["Temat"] }} - {{ przedmiot["Lokalizacja"] }}</div>
-                        {% else %}
-                            <div class="day-row"></div>
-                        {% endif %}
-                    {% endfor %}
-                </td>
+                {% for dzien, zajecia in tydzien.items() %}
+                    <td>
+                        <div class="day-row">{{ dzien }}</div>
+                        {% for przedmiot in zajecia %}
+                            {% if przedmiot != '' %}
+                                <div class="day-row">{{ przedmiot["Temat"] }} - {{ przedmiot["Lokalizacja"] }}</div>
+                            {% else %}
+                                <div class="day-row"></div>
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                {% endfor %}
             </tr>
         {% endfor %}
     </table>

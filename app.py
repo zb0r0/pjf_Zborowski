@@ -95,9 +95,9 @@ def uzupelnienie_dnia_zajec(poczatek_kalendarza, koniec_kalendarza):
     return pelny_kalendarz
 
 def dzielenie_kalendarza_na_siedem(kalendarz):
-    for dzien, zajecia in kalendarz.items():
-        for i in range(0, len(zajecia), 7):
-            yield dzien, zajecia[i:i + 7]
+    lista_kaledarza = list(kalendarz.items())
+    for i in range(0, len(lista_kaledarza), 7):
+        yield dict(lista_kaledarza[i:i + 7])
 
 
 @app.route('/')
@@ -112,8 +112,6 @@ def widok_kalendarza():
     kalendarz = uzupelnienie_dnia_zajec(poczatek_kalendarza, koniec_kalendarza)
     kalendarz = dzielenie_kalendarza_na_siedem(kalendarz)
 
-    for dzien, zajecia in kalendarz:
-        print(f"Dzien: {dzien}, Zajecia: {zajecia}")
     return render_template('kalendarz.html', kalendarz=kalendarz)
 
 if __name__ == '__main__':
