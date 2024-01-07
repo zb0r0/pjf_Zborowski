@@ -27,7 +27,7 @@ def generowanie_dat(poczatek_kalendarza, koniec_kalendarza):
     while iteracja_dni <= koniec_kalendarza:
         lista_dat.append(
             #calendar.day_name[iteracja_dni.weekday()],
-            iteracja_dni.strftime('%d.%m.%Y')  # Formatowanie dat do 'dd.mm.yyyy'
+            iteracja_dni.strftime('%d.%m.%Y')
         )
         iteracja_dni += timedelta(days=1)
     return lista_dat

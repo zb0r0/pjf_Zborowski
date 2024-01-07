@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Terminarz zajec</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='styles/style.css')}}">
     <style>
         table {
             width: 100%;
@@ -24,29 +25,40 @@
 <body>
     <h1>Terminarz zajec</h1>
     <table>
-    <tr>
-        <th>Poniedzialek</th>
-        <th>Wtorek</th>
-        <th>Sroda</th>
-        <th>Czwartek</th>
-        <th>Piatek</th>
-        <th>Sobota</th>
-        <th>Niedziela</th>
+        <tr>
+            <th>Godziny zajęć</th>
+            <th>Poniedzialek</th>
+            <th>Wtorek</th>
+            <th>Sroda</th>
+            <th>Czwartek</th>
+            <th>Piatek</th>
+            <th>Sobota</th>
+            <th>Niedziela</th>
 
-    </tr>
+        </tr>
     {% for tydzien in kalendarz %}
     <tr>
+    <td>
+        <div class="day-row"></div>
+        <div class="day-row">08:00-09:35</div>
+        <div class="day-row">09:50-11:25</div>
+        <div class="day-row">11:40-13:15</div>
+        <div class="day-row">13:30-15:05</div>
+        <div class="day-row">15:45-17:20</div>
+        <div class="day-row">17:35-19:10</div>
+        <div class="day-row">19:25-21:00</div>
+        </td>
         {% for dzien in tydzien %}
             <td>
-                {{ dzien }}
+                <div class="day-row">{{ dzien }}</div>
                 {% for linijka in zajecia %}
                     {% if linijka[2] == dzien %}
-                        <br>{{ linijka[0] }} - {{ linijka[1] }}
+                        <div class="day-row">{{ linijka[0] }} - {{ linijka[1] }}</div>
                     {% endif %}
                 {% endfor %}
             </td>
         {% endfor %}
-    </tr>
+    </div>
     {% endfor %}
     </table>
 </body>

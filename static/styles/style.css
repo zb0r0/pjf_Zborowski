@@ -1,0 +1,11 @@
+.day-row{
+    border-bottom: 1px solid black;
+    min-height: 15px;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+tbody tr:not(:first-child) td{
+    padding: 0;
+}
