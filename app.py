@@ -59,7 +59,6 @@ def odczyt_terminarza():
     for dzien in terminarz_zajecia:
         terminarz_zajecia[dzien] = sorted(terminarz_zajecia[dzien], key=lambda x: datetime.strptime(x['Czas rozpoczęcia'],'%H:%M:%S'))
 
-
     return terminarz_zajecia
 
 def uzupelnienie_dnia_zajec(poczatek_kalendarza, koniec_kalendarza):
@@ -112,7 +111,7 @@ def widok_kalendarza():
     kalendarz = uzupelnienie_dnia_zajec(poczatek_kalendarza, koniec_kalendarza)
     kalendarz = dzielenie_kalendarza_na_siedem(kalendarz)
 
-    return render_template('kalendarz.html', kalendarz=kalendarz)
+    return render_template('terminarz.html', kalendarz=kalendarz)
 
 if __name__ == '__main__':
     app.run(debug=True)

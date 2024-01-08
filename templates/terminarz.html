@@ -1,30 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terminarz zajec</title>
-    <link rel="stylesheet" href="{{url_for('static', filename='styles/style.css')}}">
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        td { border: 1px solid black; }
-    </style>
-</head>
-<body>
-    <h1>Terminarz zajec</h1>
-    <table>
+{% extends "base.html" %}
+{% block title %}Terminarz zajec{% endblock %}
+{% block content %}
+<table>
         <tr>
             <th>Godziny zajęć</th>
             <th>Poniedzialek</th>
@@ -64,5 +41,4 @@
             </tr>
         {% endfor %}
     </table>
-</body>
-</html>
+{% endblock %}
