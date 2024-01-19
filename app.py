@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, url_for
 from datetime import datetime, timedelta
 import csv
 
@@ -112,6 +112,18 @@ def widok_kalendarza():
     kalendarz = dzielenie_kalendarza_na_siedem(kalendarz)
 
     return render_template('terminarz.html', kalendarz=kalendarz)
+
+@app.route('/<przycisk>')
+def przekierowanie(przycisk):
+    if przycisk == 'terminarz':
+        return redirect(url_for('widok_kalendarza'))
+    else:
+        return redirect(url_for('widok_przedmiotu', przedmiot=przycisk))
+
+@app.route('/przedmiot/<przedmiot>')
+def widok_przedmiotu(przedmiot):
+
+    return render_template('przedmiot.html', przedmiot=przedmiot)
 
 if __name__ == '__main__':
     app.run(debug=True)
